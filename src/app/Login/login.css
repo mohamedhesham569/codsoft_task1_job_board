@@ -1,0 +1,140 @@
+.l-section{
+    background-color: #f8f9fa!important;
+    padding-bottom: 50px;
+}
+.l-header{
+    width: fit-content;
+    margin: auto;
+    position: relative;
+}
+.l-header img{
+    position: absolute;
+    top: 90%;
+    width: 53%;
+    left: 16%;
+}
+.login-form{
+    width: 19em;
+    background-color: white;
+    color:black;
+    margin: 30px auto;
+    border-radius: 20px;
+    border: 1px #ddd solid;
+}
+.login-img{
+    width: 150px;
+    height: 150px;
+    position: relative;
+    background-color: #f8f9fa;
+    border-radius: 50%;
+    top: -20px;
+    margin: auto;
+}
+.login-img img{
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    margin: auto;
+    /* display: block; */
+    /* padding-top: 9%; */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.login-header{
+    width: fit-content;
+    font-size: 25px;
+    margin: 0px auto 20px;
+}
+.login-lable{
+    margin: 20px;
+    display: flex;
+    gap: 2%;
+    align-items: center;
+    padding: 10px;
+    border: 1px #ddd solid;
+}
+.login-lable input{
+    border: none;
+    background-color: transparent;
+}
+.login-lable input:focus-visible{
+    outline: none;
+}
+.form-submit{
+    margin: 20px;
+    padding-bottom: 45px;
+    display: flex;
+    justify-content: space-around;
+    
+}
+#sign-up{
+    border: 1px #ddd solid;
+    background-color: white;
+    box-shadow:0 0 1px gray;
+}
+#sign-up,#continue{
+    border: none;
+    text-transform: capitalize;
+    font-weight: 600;
+    display: block;
+    margin: auto;
+    width: 30%;
+    height: 30px;
+    border-radius: 6px;
+    margin-bottom: 50px;
+    font-size: 14px;
+    cursor: pointer;
+}
+#continue{
+    display: block;
+    margin: 20px auto;
+    width: 90%;
+    color: aliceblue;
+    background-color:#0077B6;
+}
+::placeholder{
+    color: black;
+}
+.f-password{
+    color: #0066c0!important;
+    margin-left: 58%!important;
+    font-size: 13px;
+}
+.f-password:hover{
+    color: #c45500!important;
+}
+.login-active{
+    background-color:#0077B6;
+}
+.new-to-mzone p{
+    margin: auto;
+    width: fit-content;
+    font-size: 13px;
+}
+.new-to-mzone{
+    margin: auto;
+    width: fit-content;
+    position: relative;
+    margin-bottom: 10px;
+    color: #00000096;
+}
+.new-to-mzone p::before{
+    content: "";
+    position: absolute;
+    width: 37%;
+    height: 1px;
+    background-color: #0000001f;
+    top: 50%;
+    left: 100%;
+}
+.new-to-mzone p::after{
+    content: "";
+    position: absolute;
+    width: 37%;
+    height: 1px;
+    background-color: #0000001f;
+    top: 50%;
+    right: 100%;
+}

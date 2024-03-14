@@ -1,113 +1,200 @@
-import Image from "next/image";
+"use client";
+import Link from "next/link"
+import Image from "next/image"
+import bars from "./images/bars-solid.svg"
+import Job from "@/components/Job";
+import facebook from "./images/facebook.svg"
+import twitter from "./images/twitter.svg"
+import linkedin from "./images/linkedin.svg"
+import { useEffect, useState } from "react";
+import Popuppost from "@/components/Popuppost";
+import { getFirestore, addDoc, collection } from "firebase/firestore"; 
+import { getDocs } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { useRouter } from "next/navigation";
+import Popupapply from "@/components/Popupapply";
 
-export default function Home() {
+export default function page() {
+    const [name,setName]=useState("")
+    const [pop,setPop]=useState(false)
+    const [pop2,setPop2]=useState(false)
+    const router = useRouter()
+    const [popshow,setpopshow]=useState(false)
+    const [popshow2,setpopshow2]=useState(false)
+    if(popshow){
+        setTimeout(() => {
+            setpopshow(false)
+        },2000);
+    }
+    if(popshow2){
+        setTimeout(() => {
+            setpopshow2(false)
+        },2000);
+    }
+
+    let [storedValues, setStoredValues] = useState([]);
+    const [job_post, setjob_post] = useState('');
+    const [job_desc, setjob_desc] = useState('');
+    const [toggle,setToggle]=useState(false)
+    console.log(job_post)
+    console.log(job_desc)
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBSaBPOEMZ-AmSuYhGmPX9CE785X1WZbjs",
+        authDomain: "jobs-13fcf.firebaseapp.com",
+        projectId: "jobs-13fcf",
+        storageBucket: "jobs-13fcf.appspot.com",
+        messagingSenderId: "630286997969",
+        appId: "1:630286997969:web:adbccfb2c2083b063828f0",
+        measurementId: "G-020QS72N3X"
+        // databaseURL:"https://jobs-13fcf-default-rtdb.firebaseio.com/"
+      };
+      
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+
+    const db = getFirestore();
+
+    const saveDataToFirestore = async () => {
+        const docRef = await addDoc(collection(db, "posts"), {
+            job_desc:job_desc,
+            job_titel:job_post,
+            remote:toggle,
+            job_owner:name
+        });
+        setPop(false)
+        fetchDataFromFirestore()
+    };
+
+
+    const fetchDataFromFirestore = async () => {
+        const querySnapshot = await getDocs(collection(db, "posts"));
+        const temporaryArr = [];
+        querySnapshot.forEach((doc) => {
+              temporaryArr.push(doc.data());
+        });
+        setStoredValues(temporaryArr);
+  };
+
+    // setTimeout(() => {
+    //     fetchDataFromFirestore()
+    // }, 5000);
+    useEffect(()=>{
+        let name= JSON.parse(window.sessionStorage.getItem("user-info"));
+        fetchDataFromFirestore()
+        if(name){
+            setName(name.fullname) 
+        }
+    },[])
+
+    let signout=()=>{
+        
+        setName(null);
+        window.sessionStorage.removeItem("user-info");
+    }
+    
+    const golog=()=>{
+        router.push("./Login")
+    }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+    <div className="container-2xl">
+        <section className="landing">
+
+            <nav className="flex sm:justify-around justify-between p-4 items-center">
+                <div className="nav_icon capitalize font-bold text-2xl">
+                    jobs
+                </div>
+
+                <div className="nav_content flex items-center ml-5">
+                    <div className="nav_list flex">
+                        <input type="text" id="job_search" placeholder="search for job" className="job_search_bar"/>
+                    </div>
+                    {name?(<>
+                     <p className="font-bold ml-8 text-xs sm:text-base">welcome {name}</p>
+                        <button className="sm:ml-6 ml-3 log_button capitalize text-xs sm:text-base" onClick={()=>{signout()}}>sign out</button>
+                   
+
+                    </>):(<>
+                    <Link href="./Login">
+                    <button className="ml-6 log_button capitalize">log in</button></Link>
+                    </>)}
+                    
+                </div>
+
+                <div className="bar hidden"> 
+                    <Image src={bars} width={30} height={30} alt="bars" className="" />
+                </div>
+            </nav>
+
+            <div className="landing_content">
+                <p className="my-3 " style={{color:"gray"}}>Easiest way to find a perfect job</p>
+                <h1 className="font-bold my-3 text-2xl">Find Your Next Dream Job</h1>
+                <button style={{backgroundColor:"#023047"}} className="my-5  log_button capitalize" onClick={()=>name? setPop(true):golog()}>post a job</button>
+
+            </div>
+            
+        </section>
+        <Popuppost trigger={pop} setpopshow2={setpopshow2} saveDataToFirestore={saveDataToFirestore} setTrigger={setPop} toggle={toggle} setToggle={setToggle} job_post={job_post} setStoredValues={setStoredValues} job_desc={job_desc} setjob_post={setjob_post} setjob_desc={setjob_desc}></Popuppost>
+        {popshow2?(<><div className="popsucsses">
+    <div className="alert alert-success" role="alert">
+    <h4 className="alert-heading m-auto font-bold text-xl " style={{width:"fit-content"}}>Successfully!</h4>
+    <p className="mb-0 mt-2">The job has been post successfully.</p>
+    </div></div></>)
+    :(<></>)
+    }
+    </div>
+
+    <section className="jobs_section">
+        <div className="jobs_header my-8  ">
+        Browse From Our Top Jobs
         </div>
-      </div>
+        <div className="jobs my-16   mx-4 flex flex-wrap gap-3">
+            {storedValues.map(post=>(
+                <Job name={name} setPop2={setPop2} golog={golog} job_titel={post.job_titel} job_desc={post.job_desc} remote={post.remote} job_owner={post.job_owner}/>
+            ))}
+        </div>
+        <Popupapply trigger={pop2} setTrigger={setPop2} setpopshow={setpopshow}/>
+        
+        {popshow?(<><div className="popsucsses">
+    <div className="alert alert-success" role="alert">
+    <h4 className="alert-heading m-auto font-bold text-xl " style={{width:"fit-content"}}>Successfully!</h4>
+    <p className="mb-0 mt-2">The application has been sent successfully.</p>
+    </div></div></>)
+    :(<></>)
+    }
+    </section>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+    <section className="footer">
+        <div className="footer_content flex justify-center sm:justify-between flex-wrap">
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+            <div className="social w-full sm:w-2/4">
+                <div className="social_header m-5 flex sm:block justify-center gap-20">
+                    <h1 className="font-bold text-xl my-4">jobs</h1>
+                    <p className="w-2/4 my-4">The automated process starts as soon as your clothes go into the machine.The outcome is gleaming clothes.</p>
+                </div>
+                <div className="social_links m-5 flex gap-3 justify-center sm:justify-start ">
+                    <Link href="#"><Image src={facebook} width={20} height={20}  alt="icon" className="social_icon"/></Link>
+                    <Link href="#"><Image src={twitter} width={20} height={20}  alt="icon" className="social_icon"/></Link>
+                    <Link href="#"><Image src={linkedin} width={20} height={20} style={{height:"20px"}}  alt="icon" className="social_icon"/></Link>
+                </div>
+            </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+            <div className="subscribe w-full sm:w-2/4 flex justify-end">
+                <div className="sub_header m-5">
+                    <h1 style={{width:"fit-content"}} className="font-bold my-3 mx-auto sm:mx-1">Subscribe Newsletter</h1>
+                    <p>Subscribe newsletter to get updates about new jobs.</p>
+                    <input type="email" className="sup_input block my-4 mx-auto sm:mx-1" placeholder="Enter your email"/>
+                    <button type="button" className="log_button capitalize flex mx-auto sm:mx-1 my-4">subscribe</button>
+                </div>
+            </div>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+            <div className="cobyright">
+            &copy:{new Date().getFullYear()};powerd by mohamed hisham
+            </div>
+        </div>
+    </section>
+    </>
+  )
 }

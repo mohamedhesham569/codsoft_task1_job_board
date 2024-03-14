@@ -1,0 +1,43 @@
+.job_card{
+    width: 30%;
+    border: 1px solid rgba(128, 128, 128, 0.386);
+    border-radius: 10px;
+    transition: all 0.5s;
+    position: relative;
+    
+}
+.job_card:hover{
+    box-shadow: 0px 0px 5px 1px #0077b640;
+}
+.job_card_content{
+    padding: 1.25rem 1.25rem 3rem!important;
+    padding-bottom: 3rem;
+    
+}
+.apply_button{
+    background-color: #023047;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-top: 10px;
+    position: absolute;
+    bottom: 2%;
+    right: 5%;
+}
+.remote{
+    position: absolute;
+    top: 5%;
+    right: 5%;  
+    background: rgba(18, 217, 223, 0.09);
+    color: #12D9DF;
+    padding: 5px 10px;
+    text-transform: capitalize;
+    border-radius: 20px;
+}
+
+
+@media(max-width:720px) {
+    .job_card{
+        width: 100%!important;
+    }
+}

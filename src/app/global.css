@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.nav_content{
+    gap: 5px;
+    text-transform: capitalize;
+}
+.nav_list{
+    gap: 10px;
+    align-items: center;
+    width: 45%;
+}
+.nav_list input{
+    width: 100%;
+}
+.landing{
+    
+    height: 100vh;
+    background-image: url(./images/bg2.png);
+    background-position: right;
+    background-size: cover;
+    position: relative;
+}
+.job_search_bar,.sup_input{
+    padding: 3px 10px;
+    border:#0077B6 1px solid;
+    border-radius: 20px;
+}
+.link_active{
+    color: #0077B6;
+    font-weight: 700;
+    border-bottom: 1px solid;
+}
+.log_button{
+    background-color: #0077B6;
+    padding: 7px 16px;
+    border-radius: 20px;
+    color: white;
+    transition: all 0.5s;
+}
+.log_button:hover{
+    opacity: 0.8;
+}
+.bar{
+    cursor: pointer; 
+}
+.landing_content{
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translate(0px, -50%);
+}
+/* .jobs_section{
+    height: 100vh;
+} */
+.jobs{
+    justify-content: center;
+}
+.jobs_header{
+    margin: auto;
+    width: fit-content;
+    font-size: 25px;
+    font-weight: 600;
+}
+.footer{
+    background-color: #023047;
+    color: aliceblue;
+}
+.social_links a{
+    padding: 6px 6px;
+    background-color: aliceblue;
+    border-radius: 50%;
+}
+.social{
+    border-right: 1px solid rgba(255, 255, 255, 0.297);
+}
+.cobyright{
+    margin: auto;
+    text-transform: capitalize;
+}
+.popsucsses{
+    height: 100vh;
+    position: fixed;
+    background-color: #80808061;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+}
+.alert{
+    width: 50%;
+    margin: auto;
+    margin-top: 20%;
+    box-shadow: 0px 0px 5px 1px #4CAF50;
+}
+.p-5{
+    padding: 1.25rem!important;
+}
+
+@media(max-width:720px) {
+    .landing_content{
+        left: 3%!important;
+        top: 63%!important;
+    }
+    .alert{
+        width: 70%!important;
+    }
+}
